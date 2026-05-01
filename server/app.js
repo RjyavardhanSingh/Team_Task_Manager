@@ -8,9 +8,18 @@ import dashboardRoutes from './src/modules/dashboard/dashboard.route.js'
 
 const app = express()
 
-app.use(cors({
-    origin: "https://unique-vitality-production-6d97.up.railway.app/"
-}))
+const allowedOrigins = process.env.CORS_ORIGINS 
+    ? process.env.CORS_ORIGINS.split(',') 
+    : ['http://localhost:5173'];
+
+const corsOptions = {
+    origin: allowedOrigins,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true,
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions))
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 
